@@ -1,0 +1,116 @@
+import { Clock, Users, ChefHat, Heart } from 'lucide-react';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+
+export interface Recipe {
+  id: string;
+  title: string;
+  description: string;
+  ingredients: string[];
+  cookingTime: number;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  servings: number;
+  image?: string;
+  matchedIngredients: string[];
+}
+
+interface RecipeCardProps {
+  recipe: Recipe;
+  onViewRecipe: (recipe: Recipe) => void;
+}
+
+export const RecipeCard = ({ recipe, onViewRecipe }: RecipeCardProps) => {
+  const matchPercentage = Math.round((recipe.matchedIngredients.length / recipe.ingredients.length) * 100);
+  
+  const getDifficultyColor = (difficulty: string) => {
+    switch (difficulty) {
+      case 'Easy': return 'bg-secondary text-secondary-foreground';
+      case 'Medium': return 'bg-accent text-accent-foreground';
+      case 'Hard': return 'bg-primary text-primary-foreground';
+      default: return 'bg-muted text-muted-foreground';
+    }
+  };
+
+  return (
+    <Card className="group hover:shadow-food transition-smooth cursor-pointer overflow-hidden">
+      <CardHeader className="p-0">
+        <div className="relative h-48 bg-gradient-subtle">
+          {recipe.image ? (
+            <img 
+              src={recipe.image} 
+              alt={recipe.title}
+              className="w-full h-full object-cover group-hover:scale-105 transition-smooth"
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-food flex items-center justify-center">
+              <ChefHat className="h-12 w-12 text-primary-foreground/80" />
+            </div>
+          )}
+          <div className="absolute top-3 left-3">
+            <Badge className={`${getDifficultyColor(recipe.difficulty)} shadow-sm`}>
+              {recipe.difficulty}
+            </Badge>
+          </div>
+          <div className="absolute top-3 right-3">
+            <Badge variant="secondary" className="bg-card/90 text-card-foreground shadow-sm">
+              {matchPercentage}% match
+            </Badge>
+          </div>
+        </div>
+      </CardHeader>
+
+      <CardContent className="p-4 space-y-3">
+        <div>
+          <h3 className="font-semibold text-lg text-foreground group-hover:text-primary transition-smooth">
+            {recipe.title}
+          </h3>
+          <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
+            {recipe.description}
+          </p>
+        </div>
+
+        <div className="flex items-center gap-4 text-sm text-muted-foreground">
+          <div className="flex items-center gap-1">
+            <Clock className="h-4 w-4" />
+            <span>{recipe.cookingTime}min</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <Users className="h-4 w-4" />
+            <span>{recipe.servings} servings</span>
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <div className="flex flex-wrap gap-1">
+            {recipe.ingredients.slice(0, 4).map(ingredient => (
+              <Badge 
+                key={ingredient}
+                variant={recipe.matchedIngredients.includes(ingredient) ? "default" : "outline"}
+                className={`text-xs ${
+                  recipe.matchedIngredients.includes(ingredient) 
+                    ? 'bg-primary/10 text-primary border-primary/20' 
+                    : 'bg-muted/50'
+                }`}
+              >
+                {ingredient}
+              </Badge>
+            ))}
+            {recipe.ingredients.length > 4 && (
+              <Badge variant="outline" className="text-xs bg-muted/50">
+                +{recipe.ingredients.length - 4} more
+              </Badge>
+            )}
+          </div>
+        </div>
+
+        <Button 
+          onClick={() => onViewRecipe(recipe)}
+          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground transition-smooth"
+        >
+          View Recipe
+        </Button>
+      </CardContent>
+    </Card>
+  );
+};

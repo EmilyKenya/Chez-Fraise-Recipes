@@ -1,12 +1,156 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState, useMemo } from 'react';
+import { Search, ChefHat, Sparkles } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { IngredientSelector } from '@/components/IngredientSelector';
+import { RecipeCard, Recipe } from '@/components/RecipeCard';
+import { RecipeModal } from '@/components/RecipeModal';
+import { generateAIRecipeSuggestions } from '@/data/sampleRecipes';
+import heroImage from '@/assets/hero-ingredients.jpg';
 
 const Index = () => {
+  const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const recipes = useMemo(() => {
+    return generateAIRecipeSuggestions(selectedIngredients);
+  }, [selectedIngredients]);
+
+  const filteredRecipes = useMemo(() => {
+    if (!searchQuery) return recipes;
+    return recipes.filter(recipe => 
+      recipe.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      recipe.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      recipe.ingredients.some(ingredient => 
+        ingredient.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    );
+  }, [recipes, searchQuery]);
+
+  const handleViewRecipe = (recipe: Recipe) => {
+    setSelectedRecipe(recipe);
+    setIsModalOpen(true);
+  };
+
+  const generateAIRecipes = () => {
+    // Simulate AI generation - in real app this would call OpenAI API
+    if (selectedIngredients.length > 0) {
+      // Recipes are already filtered by ingredients, so just scroll to results
+      document.getElementById('recipes-section')?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      {/* Hero Section */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${heroImage})` }}
+        />
+        <div className="absolute inset-0 bg-black/40" />
+        
+        <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-6">
+          <ChefHat className="h-16 w-16 mx-auto mb-6 animate-float" />
+          <h1 className="text-5xl md:text-7xl font-bold mb-6">
+            Recipe <span className="text-accent">Recommender</span>
+          </h1>
+          <p className="text-xl md:text-2xl mb-8 text-white/90">
+            Transform your ingredients into delicious meals with AI-powered recipe suggestions
+          </p>
+          <Button 
+            size="lg"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg font-semibold shadow-food"
+            onClick={() => document.getElementById('ingredient-section')?.scrollIntoView({ behavior: 'smooth' })}
+          >
+            Start Cooking
+            <Sparkles className="ml-2 h-5 w-5" />
+          </Button>
+        </div>
+      </section>
+
+      {/* Ingredient Selection Section */}
+      <section id="ingredient-section" className="py-16 px-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+              What's in your kitchen?
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              Select your available ingredients and let AI suggest perfect recipes for you
+            </p>
+          </div>
+
+          <div className="bg-card rounded-xl p-8 shadow-food">
+            <IngredientSelector 
+              selectedIngredients={selectedIngredients}
+              onIngredientsChange={setSelectedIngredients}
+            />
+            
+            {selectedIngredients.length > 0 && (
+              <div className="mt-8 text-center">
+                <Button 
+                  onClick={generateAIRecipes}
+                  size="lg"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 font-semibold"
+                >
+                  <Sparkles className="mr-2 h-5 w-5" />
+                  Generate AI Recipes ({filteredRecipes.length} found)
+                </Button>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Recipes Section */}
+      {filteredRecipes.length > 0 && (
+        <section id="recipes-section" className="py-16 px-6 bg-gradient-subtle">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+              <div>
+                <h2 className="text-3xl font-bold mb-2 text-foreground">
+                  Recipe Suggestions
+                </h2>
+                <p className="text-muted-foreground">
+                  {filteredRecipes.length} recipes found • Sorted by ingredient match
+                </p>
+              </div>
+              
+              <div className="mt-4 md:mt-0 w-full md:w-80">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Search recipes..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredRecipes.map((recipe) => (
+                <RecipeCard 
+                  key={recipe.id} 
+                  recipe={recipe} 
+                  onViewRecipe={handleViewRecipe}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Recipe Modal */}
+      <RecipeModal 
+        recipe={selectedRecipe}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };
