@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Clock, Users, ChefHat, Heart, X } from 'lucide-react';
 import { Recipe } from './RecipeCard';
+import { RecipeRating } from './RecipeRating';
 
 interface RecipeModalProps {
   recipe: Recipe | null;
@@ -71,6 +72,25 @@ export const RecipeModal = ({ recipe, isOpen, onClose }: RecipeModalProps) => {
               </div>
               <div className="text-xs text-muted-foreground">Match</div>
             </div>
+          </div>
+
+          {/* Rating */}
+          <div className="flex items-center justify-between">
+            <RecipeRating 
+              rating={recipe.rating} 
+              totalRatings={recipe.totalRatings} 
+              readonly={false}
+              size="lg"
+            />
+            {recipe.dietaryInfo.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {recipe.dietaryInfo.map(diet => (
+                  <Badge key={diet} variant="secondary" className="bg-secondary/10 text-secondary">
+                    {diet}
+                  </Badge>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Description */}

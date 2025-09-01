@@ -1,10 +1,12 @@
 import { useState, useMemo } from 'react';
-import { Search, ChefHat, Sparkles } from 'lucide-react';
+import { Search, ChefHat, Sparkles, ShoppingCart, Filter } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { IngredientSelector } from '@/components/IngredientSelector';
 import { RecipeCard, Recipe } from '@/components/RecipeCard';
 import { RecipeModal } from '@/components/RecipeModal';
+import { AdvancedFilters, FilterOptions } from '@/components/AdvancedFilters';
+import { ShoppingList } from '@/components/ShoppingList';
 import { generateAIRecipeSuggestions } from '@/data/sampleRecipes';
 import heroImage from '@/assets/hero-ingredients.jpg';
 
@@ -13,10 +15,20 @@ const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [filters, setFilters] = useState<FilterOptions>({
+    maxCookingTime: 120,
+    difficulty: [],
+    servings: [],
+    dietaryRestrictions: [],
+    sortBy: 'match'
+  });
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+  const [isShoppingListOpen, setIsShoppingListOpen] = useState(false);
+  const [selectedRecipesForShopping, setSelectedRecipesForShopping] = useState<string[]>([]);
 
   const recipes = useMemo(() => {
-    return generateAIRecipeSuggestions(selectedIngredients);
-  }, [selectedIngredients]);
+    return generateAIRecipeSuggestions(selectedIngredients, filters);
+  }, [selectedIngredients, filters]);
 
   const filteredRecipes = useMemo(() => {
     if (!searchQuery) return recipes;
@@ -32,6 +44,14 @@ const Index = () => {
   const handleViewRecipe = (recipe: Recipe) => {
     setSelectedRecipe(recipe);
     setIsModalOpen(true);
+  };
+
+  const toggleRecipeForShopping = (recipeId: string) => {
+    setSelectedRecipesForShopping(prev => 
+      prev.includes(recipeId) 
+        ? prev.filter(id => id !== recipeId)
+        : [...prev, recipeId]
+    );
   };
 
   const generateAIRecipes = () => {
@@ -83,7 +103,7 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="bg-card rounded-xl p-8 shadow-food">
+            <div className="bg-card rounded-xl p-8 shadow-food">
             <IngredientSelector 
               selectedIngredients={selectedIngredients}
               onIngredientsChange={setSelectedIngredients}
@@ -102,6 +122,25 @@ const Index = () => {
               </div>
             )}
           </div>
+
+          {/* Advanced Features */}
+          {filteredRecipes.length > 0 && (
+            <div className="mt-8 grid md:grid-cols-2 gap-4">
+              <AdvancedFilters
+                filters={filters}
+                onFiltersChange={setFilters}
+                isOpen={isFiltersOpen}
+                onToggle={() => setIsFiltersOpen(!isFiltersOpen)}
+              />
+              <ShoppingList
+                recipes={filteredRecipes}
+                selectedRecipes={selectedRecipesForShopping}
+                onToggleRecipe={toggleRecipeForShopping}
+                isOpen={isShoppingListOpen}
+                onToggle={() => setIsShoppingListOpen(!isShoppingListOpen)}
+              />
+            </div>
+          )}
         </div>
       </section>
 
@@ -133,12 +172,15 @@ const Index = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredRecipes.map((recipe) => (
-                <RecipeCard 
-                  key={recipe.id} 
-                  recipe={recipe} 
-                  onViewRecipe={handleViewRecipe}
-                />
+              {filteredRecipes.map((recipe, index) => (
+                <div key={recipe.id} className="animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <RecipeCard 
+                    recipe={recipe} 
+                    onViewRecipe={handleViewRecipe}
+                    onToggleForShopping={() => toggleRecipeForShopping(recipe.id)}
+                    isSelectedForShopping={selectedRecipesForShopping.includes(recipe.id)}
+                  />
+                </div>
               ))}
             </div>
           </div>

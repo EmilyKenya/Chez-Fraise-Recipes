@@ -10,6 +10,9 @@ export const SAMPLE_RECIPES: Recipe[] = [
     difficulty: 'Easy',
     servings: 4,
     matchedIngredients: [],
+    rating: 4.5,
+    totalRatings: 127,
+    dietaryInfo: ['Gluten-Free', 'Dairy-Free'],
     instructions: [
       'Cut chicken into bite-sized pieces and season with salt and pepper.',
       'Heat oil in a large wok or skillet over high heat.',
@@ -29,6 +32,9 @@ export const SAMPLE_RECIPES: Recipe[] = [
     difficulty: 'Easy',
     servings: 4,
     matchedIngredients: [],
+    rating: 4.2,
+    totalRatings: 89,
+    dietaryInfo: ['Vegetarian'],
     instructions: [
       'Cook pasta according to package directions until al dente.',
       'Heat olive oil in a large pan over medium heat.',
@@ -49,6 +55,9 @@ export const SAMPLE_RECIPES: Recipe[] = [
     difficulty: 'Medium',
     servings: 6,
     matchedIngredients: [],
+    rating: 4.7,
+    totalRatings: 156,
+    dietaryInfo: [],
     instructions: [
       'Cut beef into thin strips and season with salt and pepper.',
       'Heat butter in a large skillet over medium-high heat.',
@@ -71,6 +80,9 @@ export const SAMPLE_RECIPES: Recipe[] = [
     difficulty: 'Medium',
     servings: 4,
     matchedIngredients: [],
+    rating: 4.3,
+    totalRatings: 74,
+    dietaryInfo: ['Mediterranean', 'Gluten-Free', 'Dairy-Free'],
     instructions: [
       'Preheat oven to 400°F (200°C).',
       'Place fish fillets in a baking dish.',
@@ -90,6 +102,9 @@ export const SAMPLE_RECIPES: Recipe[] = [
     difficulty: 'Easy',
     servings: 4,
     matchedIngredients: [],
+    rating: 4.1,
+    totalRatings: 102,
+    dietaryInfo: ['Vegetarian', 'Gluten-Free'],
     instructions: [
       'Cook rice according to package directions and let cool.',
       'Beat eggs in a bowl and scramble in a hot pan with oil.',
@@ -111,6 +126,9 @@ export const SAMPLE_RECIPES: Recipe[] = [
     difficulty: 'Easy',
     servings: 2,
     matchedIngredients: [],
+    rating: 4.4,
+    totalRatings: 67,
+    dietaryInfo: ['Vegetarian', 'Gluten-Free'],
     instructions: [
       'Beat eggs with milk and a pinch of salt in a bowl.',
       'Heat butter in a non-stick pan over medium heat.',
@@ -130,6 +148,9 @@ export const SAMPLE_RECIPES: Recipe[] = [
     difficulty: 'Medium',
     servings: 6,
     matchedIngredients: [],
+    rating: 4.6,
+    totalRatings: 93,
+    dietaryInfo: ['Vegan', 'Gluten-Free', 'Dairy-Free'],
     instructions: [
       'Peel and cube potatoes into bite-sized pieces.',
       'Heat oil in a large pot over medium heat.',
@@ -151,6 +172,9 @@ export const SAMPLE_RECIPES: Recipe[] = [
     difficulty: 'Easy',
     servings: 2,
     matchedIngredients: [],
+    rating: 4.0,
+    totalRatings: 45,
+    dietaryInfo: ['Gluten-Free', 'Dairy-Free', 'Low-Carb'],
     instructions: [
       'Season chicken breasts with salt, pepper, and herbs.',
       'Preheat grill or grill pan to medium-high heat.',
@@ -164,11 +188,9 @@ export const SAMPLE_RECIPES: Recipe[] = [
   }
 ];
 
-export const generateAIRecipeSuggestions = (ingredients: string[]): Recipe[] => {
+export const generateAIRecipeSuggestions = (ingredients: string[], filters?: any): Recipe[] => {
   // Simulate AI recipe generation based on ingredients
-  if (ingredients.length === 0) return SAMPLE_RECIPES;
-  
-  return SAMPLE_RECIPES.map(recipe => ({
+  let recipes = ingredients.length === 0 ? SAMPLE_RECIPES : SAMPLE_RECIPES.map(recipe => ({
     ...recipe,
     matchedIngredients: recipe.ingredients.filter(ingredient => 
       ingredients.some(selected => 
@@ -176,5 +198,60 @@ export const generateAIRecipeSuggestions = (ingredients: string[]): Recipe[] => 
         ingredient.toLowerCase().includes(selected.toLowerCase())
       )
     )
-  })).sort((a, b) => b.matchedIngredients.length - a.matchedIngredients.length);
+  }));
+
+  // Apply filters if provided
+  if (filters) {
+    recipes = recipes.filter(recipe => {
+      // Filter by cooking time
+      if (filters.maxCookingTime && recipe.cookingTime > filters.maxCookingTime) {
+        return false;
+      }
+      
+      // Filter by difficulty
+      if (filters.difficulty && filters.difficulty.length > 0 && !filters.difficulty.includes(recipe.difficulty)) {
+        return false;
+      }
+      
+      // Filter by servings
+      if (filters.servings && filters.servings.length > 0 && !filters.servings.some(s => recipe.servings >= s)) {
+        return false;
+      }
+      
+      // Filter by dietary restrictions
+      if (filters.dietaryRestrictions && filters.dietaryRestrictions.length > 0) {
+        const hasAnyDietaryMatch = filters.dietaryRestrictions.some(diet => 
+          recipe.dietaryInfo.includes(diet)
+        );
+        if (!hasAnyDietaryMatch) return false;
+      }
+      
+      return true;
+    });
+
+    // Sort recipes based on sortBy option
+    switch (filters.sortBy) {
+      case 'time':
+        recipes.sort((a, b) => a.cookingTime - b.cookingTime);
+        break;
+      case 'difficulty':
+        const difficultyOrder = { 'Easy': 1, 'Medium': 2, 'Hard': 3 };
+        recipes.sort((a, b) => difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty]);
+        break;
+      case 'servings':
+        recipes.sort((a, b) => a.servings - b.servings);
+        break;
+      case 'rating':
+        recipes.sort((a, b) => b.rating - a.rating);
+        break;
+      case 'match':
+      default:
+        recipes.sort((a, b) => b.matchedIngredients.length - a.matchedIngredients.length);
+        break;
+    }
+  } else {
+    recipes.sort((a, b) => b.matchedIngredients.length - a.matchedIngredients.length);
+  }
+
+  return recipes;
 };

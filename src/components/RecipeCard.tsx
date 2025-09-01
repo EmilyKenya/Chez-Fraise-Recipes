@@ -1,7 +1,8 @@
-import { Clock, Users, ChefHat, Heart } from 'lucide-react';
+import { Clock, Users, ChefHat, Heart, ShoppingCart, Check } from 'lucide-react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { RecipeRating } from './RecipeRating';
 
 export interface Recipe {
   id: string;
@@ -14,14 +15,19 @@ export interface Recipe {
   image?: string;
   matchedIngredients: string[];
   instructions: string[];
+  rating: number;
+  totalRatings: number;
+  dietaryInfo: string[];
 }
 
 interface RecipeCardProps {
   recipe: Recipe;
   onViewRecipe: (recipe: Recipe) => void;
+  onToggleForShopping?: () => void;
+  isSelectedForShopping?: boolean;
 }
 
-export const RecipeCard = ({ recipe, onViewRecipe }: RecipeCardProps) => {
+export const RecipeCard = ({ recipe, onViewRecipe, onToggleForShopping, isSelectedForShopping = false }: RecipeCardProps) => {
   const matchPercentage = Math.round((recipe.matchedIngredients.length / recipe.ingredients.length) * 100);
   
   const getDifficultyColor = (difficulty: string) => {
@@ -82,6 +88,30 @@ export const RecipeCard = ({ recipe, onViewRecipe }: RecipeCardProps) => {
           </div>
         </div>
 
+        {/* Rating */}
+        <RecipeRating 
+          rating={recipe.rating} 
+          totalRatings={recipe.totalRatings} 
+          readonly 
+          size="sm"
+        />
+
+        {/* Dietary Info */}
+        {recipe.dietaryInfo.length > 0 && (
+          <div className="flex flex-wrap gap-1">
+            {recipe.dietaryInfo.slice(0, 2).map(diet => (
+              <Badge key={diet} variant="outline" className="text-xs bg-secondary/10 text-secondary">
+                {diet}
+              </Badge>
+            ))}
+            {recipe.dietaryInfo.length > 2 && (
+              <Badge variant="outline" className="text-xs bg-muted/50">
+                +{recipe.dietaryInfo.length - 2}
+              </Badge>
+            )}
+          </div>
+        )}
+
         <div className="space-y-2">
           <div className="flex flex-wrap gap-1">
             {recipe.ingredients.slice(0, 4).map(ingredient => (
@@ -105,12 +135,24 @@ export const RecipeCard = ({ recipe, onViewRecipe }: RecipeCardProps) => {
           </div>
         </div>
 
-        <Button 
-          onClick={() => onViewRecipe(recipe)}
-          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground transition-smooth"
-        >
-          View Recipe
-        </Button>
+        <div className="flex gap-2">
+          <Button 
+            onClick={() => onViewRecipe(recipe)}
+            className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground transition-smooth"
+          >
+            View Recipe
+          </Button>
+          {onToggleForShopping && (
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={onToggleForShopping}
+              className={`${isSelectedForShopping ? 'bg-secondary text-secondary-foreground' : ''} hover-scale`}
+            >
+              {isSelectedForShopping ? <Check className="h-4 w-4" /> : <ShoppingCart className="h-4 w-4" />}
+            </Button>
+          )}
+        </div>
       </CardContent>
     </Card>
   );
