@@ -13,6 +13,7 @@ export interface Recipe {
   servings: number;
   image?: string;
   matchedIngredients: string[];
+  instructions: string[];
 }
 
 interface RecipeCardProps {

@@ -114,6 +114,21 @@ export const RecipeModal = ({ recipe, isOpen, onClose }: RecipeModalProps) => {
             </div>
           </div>
 
+          {/* Cooking Instructions */}
+          <div>
+            <h3 className="font-semibold mb-3 text-foreground">Cooking Instructions</h3>
+            <div className="space-y-3">
+              {recipe.instructions.map((instruction, index) => (
+                <div key={index} className="flex gap-3 p-3 bg-muted/30 rounded-lg">
+                  <div className="flex-shrink-0 w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-medium">
+                    {index + 1}
+                  </div>
+                  <p className="text-foreground leading-relaxed">{instruction}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* Action Buttons */}
           <div className="flex gap-3 pt-4">
             <Button className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground">
