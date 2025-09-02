@@ -1,38 +1,23 @@
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { User, LogOut } from "lucide-react";
-import { createClient, type User as SupabaseUser } from "@supabase/supabase-js";
+import { LogOut } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL!,
-  import.meta.env.VITE_SUPABASE_ANON_KEY!
-);
-
-interface UserMenuProps {
-  user: SupabaseUser;
-}
-
-export const UserMenu = ({ user }: UserMenuProps) => {
+export const UserMenu = () => {
+  const { user, signOut } = useAuth();
   const { toast } = useToast();
   
-  const handleSignOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
-    } else {
-      toast({
-        title: "Signed out",
-        description: "You have been signed out successfully.",
-      });
-    }
+  const handleSignOut = () => {
+    signOut();
+    toast({
+      title: "Signed out",
+      description: "You have been signed out successfully.",
+    });
   };
+
+  if (!user) return null;
 
   const getInitials = (email: string) => {
     return email.slice(0, 2).toUpperCase();
@@ -43,7 +28,7 @@ export const UserMenu = ({ user }: UserMenuProps) => {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarFallback>{getInitials(user.email || "U")}</AvatarFallback>
+            <AvatarFallback>{getInitials(user.email)}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>

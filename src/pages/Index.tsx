@@ -10,17 +10,11 @@ import { ShoppingList } from '@/components/ShoppingList';
 import { AuthForm } from '@/components/AuthForm';
 import { UserMenu } from '@/components/UserMenu';
 import { generateAIRecipeSuggestions } from '@/data/sampleRecipes';
-import { createClient, type User } from '@supabase/supabase-js';
+import { useAuth } from '@/hooks/useAuth';
 import heroImage from '@/assets/hero-ingredients.jpg';
 
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL!,
-  import.meta.env.VITE_SUPABASE_ANON_KEY!
-);
-
 const Index = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { user, loading } = useAuth();
   const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
@@ -35,23 +29,6 @@ const Index = () => {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [isShoppingListOpen, setIsShoppingListOpen] = useState(false);
   const [selectedRecipesForShopping, setSelectedRecipesForShopping] = useState<string[]>([]);
-
-  useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
 
   const recipes = useMemo(() => {
     return generateAIRecipeSuggestions(selectedIngredients, filters);
@@ -120,7 +97,7 @@ const Index = () => {
         
         {/* User Menu */}
         <div className="absolute top-4 right-4 z-20">
-          <UserMenu user={user} />
+          <UserMenu />
         </div>
         
         <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-6">

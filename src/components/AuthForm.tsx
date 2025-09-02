@@ -4,37 +4,33 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { createClient } from "@supabase/supabase-js";
+import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
-
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL!,
-  import.meta.env.VITE_SUPABASE_ANON_KEY!
-);
 
 export const AuthForm = () => {
   const [loading, setLoading] = useState(false);
+  const { signIn, signUp } = useAuth();
   const { toast } = useToast();
   
   const handleAuth = async (email: string, password: string, isSignUp: boolean) => {
     setLoading(true);
     try {
-      const { error } = isSignUp 
-        ? await supabase.auth.signUp({ email, password })
-        : await supabase.auth.signInWithPassword({ email, password });
-      
-      if (error) throw error;
+      if (isSignUp) {
+        await signUp(email, password);
+      } else {
+        await signIn(email, password);
+      }
       
       toast({
         title: isSignUp ? "Account created!" : "Welcome back!",
         description: isSignUp 
-          ? "Please check your email to verify your account." 
+          ? "Your account has been created successfully." 
           : "You have been signed in successfully.",
       });
     } catch (error: any) {
       toast({
         title: "Error",
-        description: error.message,
+        description: error.message || "An error occurred",
         variant: "destructive",
       });
     } finally {
