@@ -77,14 +77,6 @@ const Index = () => {
     );
   }
 
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <AuthForm />
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -95,9 +87,9 @@ const Index = () => {
         />
         <div className="absolute inset-0 bg-black/40" />
         
-        {/* User Menu */}
+        {/* User Menu or Auth Form */}
         <div className="absolute top-4 right-4 z-20">
-          <UserMenu />
+          {user ? <UserMenu /> : null}
         </div>
         
         <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-6">
@@ -108,119 +100,131 @@ const Index = () => {
           <p className="text-xl md:text-2xl mb-8 text-white/90">
             Transform your ingredients into delicious meals with AI-powered recipe suggestions
           </p>
-          <Button 
-            size="lg"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg font-semibold shadow-food"
-            onClick={() => document.getElementById('ingredient-section')?.scrollIntoView({ behavior: 'smooth' })}
-          >
-            Start Cooking
-            <Sparkles className="ml-2 h-5 w-5" />
-          </Button>
-        </div>
-      </section>
-
-      {/* Ingredient Selection Section */}
-      <section id="ingredient-section" className="py-16 px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
-              What's in your kitchen?
-            </h2>
-            <p className="text-lg text-muted-foreground">
-              Select your available ingredients and let AI suggest perfect recipes for you
-            </p>
-          </div>
-
-            <div className="bg-card rounded-xl p-8 shadow-food">
-            <IngredientSelector 
-              selectedIngredients={selectedIngredients}
-              onIngredientsChange={setSelectedIngredients}
-            />
-            
-            {selectedIngredients.length > 0 && (
-              <div className="mt-8 text-center">
-                <Button 
-                  onClick={generateAIRecipes}
-                  size="lg"
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 font-semibold"
-                >
-                  <Sparkles className="mr-2 h-5 w-5" />
-                  Generate AI Recipes ({filteredRecipes.length} found)
-                </Button>
-              </div>
-            )}
-          </div>
-
-          {/* Advanced Features */}
-          {filteredRecipes.length > 0 && (
-            <div className="mt-8 grid md:grid-cols-2 gap-4">
-              <AdvancedFilters
-                filters={filters}
-                onFiltersChange={setFilters}
-                isOpen={isFiltersOpen}
-                onToggle={() => setIsFiltersOpen(!isFiltersOpen)}
-              />
-              <ShoppingList
-                recipes={filteredRecipes}
-                selectedRecipes={selectedRecipesForShopping}
-                onToggleRecipe={toggleRecipeForShopping}
-                isOpen={isShoppingListOpen}
-                onToggle={() => setIsShoppingListOpen(!isShoppingListOpen)}
-              />
+          
+          {!user ? (
+            <div className="max-w-md mx-auto mb-8">
+              <AuthForm />
             </div>
+          ) : (
+            <Button 
+              size="lg"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg font-semibold shadow-food"
+              onClick={() => document.getElementById('ingredient-section')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              Start Cooking
+              <Sparkles className="ml-2 h-5 w-5" />
+            </Button>
           )}
         </div>
       </section>
 
-      {/* Recipes Section */}
-      {filteredRecipes.length > 0 && (
-        <section id="recipes-section" className="py-16 px-6 bg-gradient-subtle">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
-              <div>
-                <h2 className="text-3xl font-bold mb-2 text-foreground">
-                  Recipe Suggestions
+      {/* Only show the rest of the app if user is authenticated */}
+      {user && (
+        <>
+          {/* Ingredient Selection Section */}
+          <section id="ingredient-section" className="py-16 px-6">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-12">
+                <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+                  What's in your kitchen?
                 </h2>
-                <p className="text-muted-foreground">
-                  {filteredRecipes.length} recipes found • Sorted by ingredient match
+                <p className="text-lg text-muted-foreground">
+                  Select your available ingredients and let AI suggest perfect recipes for you
                 </p>
               </div>
-              
-              <div className="mt-4 md:mt-0 w-full md:w-80">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Search recipes..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10"
+
+              <div className="bg-card rounded-xl p-8 shadow-food">
+                <IngredientSelector 
+                  selectedIngredients={selectedIngredients}
+                  onIngredientsChange={setSelectedIngredients}
+                />
+                
+                {selectedIngredients.length > 0 && (
+                  <div className="mt-8 text-center">
+                    <Button 
+                      onClick={generateAIRecipes}
+                      size="lg"
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 font-semibold"
+                    >
+                      <Sparkles className="mr-2 h-5 w-5" />
+                      Generate AI Recipes ({filteredRecipes.length} found)
+                    </Button>
+                  </div>
+                )}
+              </div>
+
+              {/* Advanced Features */}
+              {filteredRecipes.length > 0 && (
+                <div className="mt-8 grid md:grid-cols-2 gap-4">
+                  <AdvancedFilters
+                    filters={filters}
+                    onFiltersChange={setFilters}
+                    isOpen={isFiltersOpen}
+                    onToggle={() => setIsFiltersOpen(!isFiltersOpen)}
                   />
+                  <ShoppingList
+                    recipes={filteredRecipes}
+                    selectedRecipes={selectedRecipesForShopping}
+                    onToggleRecipe={toggleRecipeForShopping}
+                    isOpen={isShoppingListOpen}
+                    onToggle={() => setIsShoppingListOpen(!isShoppingListOpen)}
+                  />
+                </div>
+              )}
+            </div>
+          </section>
+
+          {/* Recipes Section */}
+          {filteredRecipes.length > 0 && (
+            <section id="recipes-section" className="py-16 px-6 bg-gradient-subtle">
+              <div className="max-w-6xl mx-auto">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+                  <div>
+                    <h2 className="text-3xl font-bold mb-2 text-foreground">
+                      Recipe Suggestions
+                    </h2>
+                    <p className="text-muted-foreground">
+                      {filteredRecipes.length} recipes found • Sorted by ingredient match
+                    </p>
+                  </div>
+                  
+                  <div className="mt-4 md:mt-0 w-full md:w-80">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        placeholder="Search recipes..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="pl-10"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filteredRecipes.map((recipe, index) => (
+                    <div key={recipe.id} className="animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
+                      <RecipeCard 
+                        recipe={recipe} 
+                        onViewRecipe={handleViewRecipe}
+                        onToggleForShopping={() => toggleRecipeForShopping(recipe.id)}
+                        isSelectedForShopping={selectedRecipesForShopping.includes(recipe.id)}
+                      />
+                    </div>
+                  ))}
                 </div>
               </div>
-            </div>
+            </section>
+          )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredRecipes.map((recipe, index) => (
-                <div key={recipe.id} className="animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
-                  <RecipeCard 
-                    recipe={recipe} 
-                    onViewRecipe={handleViewRecipe}
-                    onToggleForShopping={() => toggleRecipeForShopping(recipe.id)}
-                    isSelectedForShopping={selectedRecipesForShopping.includes(recipe.id)}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+          {/* Recipe Modal */}
+          <RecipeModal 
+            recipe={selectedRecipe}
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+          />
+        </>
       )}
-
-      {/* Recipe Modal */}
-      <RecipeModal 
-        recipe={selectedRecipe}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
     </div>
   );
 };

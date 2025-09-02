@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -50,26 +51,30 @@ export const AuthForm = () => {
     return (
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email" className="text-white">Email</Label>
           <Input
             id="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            className="bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:bg-white/20"
+            placeholder="Enter your email"
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="password" className="text-white">Password</Label>
           <Input
             id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            className="bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:bg-white/20"
+            placeholder="Enter your password"
           />
         </div>
-        <Button type="submit" className="w-full" disabled={loading}>
+        <Button type="submit" className="w-full bg-primary hover:bg-primary/90" disabled={loading}>
           {loading ? "Loading..." : isSignUp ? "Sign Up" : "Sign In"}
         </Button>
       </form>
@@ -77,16 +82,16 @@ export const AuthForm = () => {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader>
-        <CardTitle>Welcome to Recipe Finder</CardTitle>
-        <CardDescription>Sign in or create an account to save your favorite recipes</CardDescription>
+    <Card className="w-full max-w-md mx-auto bg-white/10 backdrop-blur-md border-white/20">
+      <CardHeader className="text-center">
+        <CardTitle className="text-white">Join Recipe Finder</CardTitle>
+        <CardDescription className="text-white/80">Sign in or create an account to save your favorite recipes</CardDescription>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="signin" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="signin">Sign In</TabsTrigger>
-            <TabsTrigger value="signup">Sign Up</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 bg-white/10">
+            <TabsTrigger value="signin" className="text-white data-[state=active]:bg-white data-[state=active]:text-black">Sign In</TabsTrigger>
+            <TabsTrigger value="signup" className="text-white data-[state=active]:bg-white data-[state=active]:text-black">Sign Up</TabsTrigger>
           </TabsList>
           <TabsContent value="signin">
             <AuthFormContent isSignUp={false} />
