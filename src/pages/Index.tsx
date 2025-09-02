@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Search, ChefHat, Sparkles, ShoppingCart, Filter } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -7,10 +7,20 @@ import { RecipeCard, Recipe } from '@/components/RecipeCard';
 import { RecipeModal } from '@/components/RecipeModal';
 import { AdvancedFilters, FilterOptions } from '@/components/AdvancedFilters';
 import { ShoppingList } from '@/components/ShoppingList';
+import { AuthForm } from '@/components/AuthForm';
+import { UserMenu } from '@/components/UserMenu';
 import { generateAIRecipeSuggestions } from '@/data/sampleRecipes';
+import { createClient, type User } from '@supabase/supabase-js';
 import heroImage from '@/assets/hero-ingredients.jpg';
 
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL!,
+  import.meta.env.VITE_SUPABASE_ANON_KEY!
+);
+
 const Index = () => {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
   const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
@@ -25,6 +35,23 @@ const Index = () => {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [isShoppingListOpen, setIsShoppingListOpen] = useState(false);
   const [selectedRecipesForShopping, setSelectedRecipesForShopping] = useState<string[]>([]);
+
+  useEffect(() => {
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const recipes = useMemo(() => {
     return generateAIRecipeSuggestions(selectedIngredients, filters);
@@ -62,6 +89,25 @@ const Index = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <AuthForm />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -71,6 +117,11 @@ const Index = () => {
           style={{ backgroundImage: `url(${heroImage})` }}
         />
         <div className="absolute inset-0 bg-black/40" />
+        
+        {/* User Menu */}
+        <div className="absolute top-4 right-4 z-20">
+          <UserMenu user={user} />
+        </div>
         
         <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-6">
           <ChefHat className="h-16 w-16 mx-auto mb-6 animate-float" />
