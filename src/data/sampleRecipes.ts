@@ -185,6 +185,143 @@ export const SAMPLE_RECIPES: Recipe[] = [
       'Top with sliced grilled chicken.',
       'Drizzle with olive oil and your favorite dressing.'
     ]
+  },
+  {
+    id: '9',
+    title: 'Ugali',
+    description: 'Traditional Kenyan staple made from maize flour - simple, filling, and versatile.',
+    ingredients: ['maize flour', 'water', 'salt'],
+    cookingTime: 15,
+    difficulty: 'Easy',
+    servings: 4,
+    matchedIngredients: [],
+    rating: 4.8,
+    totalRatings: 234,
+    dietaryInfo: ['Vegan', 'Gluten-Free', 'Dairy-Free'],
+    instructions: [
+      'Bring 2 cups of water to boil in a heavy-bottomed pan.',
+      'Add a pinch of salt to the boiling water.',
+      'Gradually add maize flour while stirring continuously with a wooden spoon.',
+      'Keep stirring to avoid lumps and cook for 5-7 minutes.',
+      'The ugali is ready when it pulls away from the sides of the pan.',
+      'Shape into a mound and serve hot with vegetables or meat.'
+    ]
+  },
+  {
+    id: '10',
+    title: 'Sukuma Wiki (Collard Greens)',
+    description: 'Popular Kenyan vegetable dish with collard greens, onions, and tomatoes.',
+    ingredients: ['collard greens', 'onions', 'tomatoes', 'garlic', 'oil', 'salt'],
+    cookingTime: 20,
+    difficulty: 'Easy',
+    servings: 4,
+    matchedIngredients: [],
+    rating: 4.5,
+    totalRatings: 187,
+    dietaryInfo: ['Vegan', 'Gluten-Free', 'Dairy-Free'],
+    instructions: [
+      'Wash and chop collard greens into strips.',
+      'Heat oil in a large pan over medium heat.',
+      'Add chopped onions and cook until golden brown.',
+      'Add minced garlic and cook for 1 minute.',
+      'Add diced tomatoes and cook until softened.',
+      'Add collard greens and stir well.',
+      'Cover and cook for 10-15 minutes until greens are tender.',
+      'Season with salt and serve with ugali or rice.'
+    ]
+  },
+  {
+    id: '11',
+    title: 'Kenyan Chapati',
+    description: 'Soft and flaky flatbread perfect for any meal - a Kenyan favorite.',
+    ingredients: ['flour', 'water', 'oil', 'salt', 'sugar'],
+    cookingTime: 45,
+    difficulty: 'Medium',
+    servings: 6,
+    matchedIngredients: [],
+    rating: 4.6,
+    totalRatings: 156,
+    dietaryInfo: ['Vegetarian'],
+    instructions: [
+      'Mix flour, salt, and a pinch of sugar in a bowl.',
+      'Add oil and mix, then gradually add warm water to form a soft dough.',
+      'Knead the dough for 5-10 minutes until smooth.',
+      'Cover and let rest for 30 minutes.',
+      'Divide dough into 6 portions and roll each into a thin circle.',
+      'Brush with oil, roll up, then coil and roll flat again.',
+      'Cook on a hot pan for 2-3 minutes each side until golden spots appear.',
+      'Serve warm with stew or curry.'
+    ]
+  },
+  {
+    id: '12',
+    title: 'Githeri',
+    description: 'Hearty Kenyan dish of boiled maize and beans - nutritious and filling.',
+    ingredients: ['maize', 'beans', 'onions', 'tomatoes', 'oil', 'salt', 'spices'],
+    cookingTime: 60,
+    difficulty: 'Easy',
+    servings: 6,
+    matchedIngredients: [],
+    rating: 4.4,
+    totalRatings: 143,
+    dietaryInfo: ['Vegan', 'Gluten-Free', 'Dairy-Free'],
+    instructions: [
+      'Soak maize and beans separately overnight.',
+      'Boil maize for 30 minutes until tender.',
+      'Add beans and continue cooking for another 20 minutes.',
+      'In a separate pan, heat oil and sauté onions until golden.',
+      'Add tomatoes and cook until softened.',
+      'Add the onion-tomato mixture to the boiled maize and beans.',
+      'Season with salt and spices, simmer for 10 minutes.',
+      'Serve hot as a complete meal.'
+    ]
+  },
+  {
+    id: '13',
+    title: 'Kenyan Pilau',
+    description: 'Fragrant spiced rice dish with aromatic spices - perfect for special occasions.',
+    ingredients: ['rice', 'beef', 'onions', 'tomatoes', 'pilau masala', 'oil', 'garlic', 'ginger'],
+    cookingTime: 50,
+    difficulty: 'Medium',
+    servings: 6,
+    matchedIngredients: [],
+    rating: 4.7,
+    totalRatings: 198,
+    dietaryInfo: ['Dairy-Free'],
+    instructions: [
+      'Wash rice and soak for 30 minutes.',
+      'Cut beef into cubes and brown in hot oil.',
+      'Add sliced onions and cook until golden.',
+      'Add minced garlic, ginger, and pilau masala.',
+      'Add tomatoes and cook until softened.',
+      'Add rice and stir gently to coat with spices.',
+      'Add hot water (1:1.5 ratio with rice) and bring to boil.',
+      'Reduce heat, cover and simmer for 20 minutes until rice is tender.',
+      'Let rest for 5 minutes before serving.'
+    ]
+  },
+  {
+    id: '14',
+    title: 'Mandazi',
+    description: 'Sweet Kenyan fried bread - perfect for breakfast or tea time snack.',
+    ingredients: ['flour', 'sugar', 'milk', 'oil', 'baking powder', 'cardamom', 'eggs'],
+    cookingTime: 30,
+    difficulty: 'Medium',
+    servings: 8,
+    matchedIngredients: [],
+    rating: 4.3,
+    totalRatings: 89,
+    dietaryInfo: ['Vegetarian'],
+    instructions: [
+      'Mix flour, sugar, baking powder, and ground cardamom in a bowl.',
+      'Beat egg and add to dry ingredients.',
+      'Gradually add milk to form a soft dough.',
+      'Knead dough briefly until smooth, then let rest for 15 minutes.',
+      'Roll dough and cut into triangular or diamond shapes.',
+      'Heat oil to 350°F (175°C) for deep frying.',
+      'Fry mandazi until golden brown on both sides.',
+      'Drain on paper towels and serve warm with tea or coffee.'
+    ]
   }
 ];
 
