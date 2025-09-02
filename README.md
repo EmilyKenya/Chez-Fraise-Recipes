@@ -110,3 +110,12 @@ Push your changes to the GitHub repository.
 Netlify is connected to the repo and will automatically rebuild and deploy the app.
 
 Manage deployment settings via the Netlify dashboard.
+
+
+**Contributors:**
+Angela Nyutu- angie.nimo254@gmail.com
+Pitch deck draft
+Recipe ideas
+Emily Kagai- kagai.nyambura@gmail.com
+Prompts in loveable AI
+Pitch deck draft
