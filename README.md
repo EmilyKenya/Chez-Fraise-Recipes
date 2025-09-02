@@ -1,14 +1,14 @@
-**Chez-Fraise Recipes – Lovable Project**
+## **CHEZ-FRAISE RECIPES; LOVABLE PROJECT**
 
 Project URL: https://lovable.dev/projects/a545035f-1c98-4c4c-afa4-813cdf825da9
 Live App: https://regal-pithivier-11efdf.netlify.app/
 
 
-**Overview**
+## **Overview**
 
 Chez-Fraise Recipes is an AI-powered recipe and shopping assistant. Users can browse recipes, add ingredients to a cart, and generate a shopping list for easy meal planning.
 
-**Key Features**
+## **Key Features**
 
 Recipe Discovery: Browse curated recipes based on user preferences.
 
