@@ -1,79 +1,112 @@
-# Welcome to your Lovable project
+**Chez-Fraise Recipes – Lovable Project**
 
-## Project info
+Project URL: https://lovable.dev/projects/a545035f-1c98-4c4c-afa4-813cdf825da9
+Live App: https://regal-pithivier-11efdf.netlify.app/
 
-**URL**: https://lovable.dev/projects/a545035f-1c98-4c4c-afa4-813cdf825da9
 
-## How can I edit this code?
+**Overview**
 
-There are several ways of editing your application.
+Chez-Fraise Recipes is an AI-powered recipe and shopping assistant. Users can browse recipes, add ingredients to a cart, and generate a shopping list for easy meal planning.
 
-**Use Lovable**
+**Key Features**
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/a545035f-1c98-4c4c-afa4-813cdf825da9) and start prompting.
+Recipe Discovery: Browse curated recipes based on user preferences.
 
-Changes made via Lovable will be committed automatically to this repo.
+Add to Cart: Add recipe ingredients to a shopping cart for easy planning.
 
-**Use your preferred IDE**
+Shopping List Generation: Generate a complete list of ingredients for efficient shopping.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+User Accounts: Sign-up/login to save recipes and carts.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+**Getting Started for Users**
 
-Follow these steps:
+Sign Up / Log In
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+Create an account or log in to access all recipes and save your shopping carts.
+
+Browse Recipes
+
+Explore a variety of recipes curated for different tastes and dietary preferences.
+
+Use search or filters to find exactly what you want to cook.
+
+Add Ingredients to Cart
+
+Open a recipe and click “Add to Cart” to compile all the ingredients you’ll need.
+
+View Your Shopping List
+
+Access your cart to see a complete shopping list of ingredients for all selected recipes.
+
+Use it to plan your grocery shopping efficiently.
+
+Save & Manage Recipes
+
+Save favorite recipes to your profile for quick access later.
+
+Edit or remove items from your cart anytime.
+
+**Editing the Project**
+1. Using Lovable
+
+Visit your Lovable Project
+
+Start prompting to make changes
+
+All changes are automatically committed to the repository
+
+2. Using Your IDE Locally
+
+You can clone the repository and work locally using Node.js & npm.
+
+# Clone the repository
 git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Navigate to the project folder
+cd chez-fraise-recipes
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server with auto-reload
 npm run dev
-```
 
-**Edit a file directly in GitHub**
+3. Edit Directly on GitHub
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Navigate to the desired file
 
-**Use GitHub Codespaces**
+Click the pencil icon to edit
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Commit your changes
 
-## What technologies are used for this project?
+4. Using GitHub Codespaces
 
-This project is built with:
+Click the green Code button → Codespaces → New codespace
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Edit files within the Codespace
 
-## How can I deploy this project?
+Commit & push your changes
 
-Simply open [Lovable](https://lovable.dev/projects/a545035f-1c98-4c4c-afa4-813cdf825da9) and click on Share -> Publish.
+**Technologies Used**
 
-## Can I connect a custom domain to my Lovable project?
+Vite – build tool
 
-Yes, you can!
+TypeScript – static typing
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+React – frontend library
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Tailwind CSS – styling framework
 
+shadcn-ui – UI components
 
+**Deployment**
+The project is deployed on Netlify.
+Live App: https://regal-pithivier-11efdf.netlify.app/
 
-Collaborators:
-Angela Nyutu
-Emily Kagai
+Deploying / Updating on Netlify
+
+Push your changes to the GitHub repository.
+
+Netlify is connected to the repo and will automatically rebuild and deploy the app.
+
+Manage deployment settings via the Netlify dashboard.
