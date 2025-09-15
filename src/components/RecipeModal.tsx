@@ -25,7 +25,7 @@ export const RecipeModal = ({ recipe, isOpen, onClose }: RecipeModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-foreground">
             {recipe.title}
@@ -33,8 +33,8 @@ export const RecipeModal = ({ recipe, isOpen, onClose }: RecipeModalProps) => {
         </DialogHeader>
 
         <div className="space-y-6">
-          {/* Recipe Image */}
-          <div className="relative h-64 bg-gradient-subtle rounded-lg overflow-hidden">
+          {/* Hero Image Section */}
+          <div className="relative h-80 bg-gradient-subtle rounded-xl overflow-hidden shadow-food">
             {recipe.image ? (
               <img 
                 src={recipe.image} 
@@ -43,13 +43,16 @@ export const RecipeModal = ({ recipe, isOpen, onClose }: RecipeModalProps) => {
               />
             ) : (
               <div className="w-full h-full bg-gradient-food flex items-center justify-center">
-                <ChefHat className="h-16 w-16 text-primary-foreground/80" />
+                <ChefHat className="h-20 w-20 text-primary-foreground/80" />
               </div>
             )}
-            <div className="absolute top-4 left-4">
-              <Badge className={`${getDifficultyColor(recipe.difficulty)} shadow-sm`}>
-                {recipe.difficulty}
-              </Badge>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+            <div className="absolute bottom-4 left-4 right-4">
+              <div className="flex items-center justify-between">
+                <Badge className={`${getDifficultyColor(recipe.difficulty)} shadow-sm`}>
+                  {recipe.difficulty}
+                </Badge>
+              </div>
             </div>
           </div>
 

@@ -1,4 +1,5 @@
 import { Recipe } from '@/components/RecipeCard';
+import { RECIPE_PLACEHOLDER_IMAGES } from '@/services/recipeImageService';
 
 export const SAMPLE_RECIPES: Recipe[] = [
   {
@@ -13,6 +14,7 @@ export const SAMPLE_RECIPES: Recipe[] = [
     rating: 4.5,
     totalRatings: 127,
     dietaryInfo: ['Gluten-Free', 'Dairy-Free'],
+    image: RECIPE_PLACEHOLDER_IMAGES['Classic Chicken Stir-Fry'],
     instructions: [
       'Cut chicken into bite-sized pieces and season with salt and pepper.',
       'Heat oil in a large wok or skillet over high heat.',
@@ -35,6 +37,7 @@ export const SAMPLE_RECIPES: Recipe[] = [
     rating: 4.2,
     totalRatings: 89,
     dietaryInfo: ['Vegetarian'],
+    image: RECIPE_PLACEHOLDER_IMAGES['Creamy Tomato Pasta'],
     instructions: [
       'Cook pasta according to package directions until al dente.',
       'Heat olive oil in a large pan over medium heat.',
@@ -58,6 +61,7 @@ export const SAMPLE_RECIPES: Recipe[] = [
     rating: 4.7,
     totalRatings: 156,
     dietaryInfo: [],
+    image: RECIPE_PLACEHOLDER_IMAGES['Beef and Mushroom Stroganoff'],
     instructions: [
       'Cut beef into thin strips and season with salt and pepper.',
       'Heat butter in a large skillet over medium-high heat.',
@@ -83,6 +87,7 @@ export const SAMPLE_RECIPES: Recipe[] = [
     rating: 4.3,
     totalRatings: 74,
     dietaryInfo: ['Mediterranean', 'Gluten-Free', 'Dairy-Free'],
+    image: RECIPE_PLACEHOLDER_IMAGES['Mediterranean Fish Bake'],
     instructions: [
       'Preheat oven to 400°F (200°C).',
       'Place fish fillets in a baking dish.',
@@ -105,6 +110,7 @@ export const SAMPLE_RECIPES: Recipe[] = [
     rating: 4.1,
     totalRatings: 102,
     dietaryInfo: ['Vegetarian', 'Gluten-Free'],
+    image: RECIPE_PLACEHOLDER_IMAGES['Vegetarian Fried Rice'],
     instructions: [
       'Cook rice according to package directions and let cool.',
       'Beat eggs in a bowl and scramble in a hot pan with oil.',
@@ -129,6 +135,7 @@ export const SAMPLE_RECIPES: Recipe[] = [
     rating: 4.4,
     totalRatings: 67,
     dietaryInfo: ['Vegetarian', 'Gluten-Free'],
+    image: RECIPE_PLACEHOLDER_IMAGES['Cheese and Herb Omelette'],
     instructions: [
       'Beat eggs with milk and a pinch of salt in a bowl.',
       'Heat butter in a non-stick pan over medium heat.',
@@ -151,6 +158,7 @@ export const SAMPLE_RECIPES: Recipe[] = [
     rating: 4.6,
     totalRatings: 93,
     dietaryInfo: ['Vegan', 'Gluten-Free', 'Dairy-Free'],
+    image: RECIPE_PLACEHOLDER_IMAGES['Spicy Potato Curry'],
     instructions: [
       'Peel and cube potatoes into bite-sized pieces.',
       'Heat oil in a large pot over medium heat.',
@@ -175,6 +183,7 @@ export const SAMPLE_RECIPES: Recipe[] = [
     rating: 4.0,
     totalRatings: 45,
     dietaryInfo: ['Gluten-Free', 'Dairy-Free', 'Low-Carb'],
+    image: RECIPE_PLACEHOLDER_IMAGES['Grilled Chicken Salad'],
     instructions: [
       'Season chicken breasts with salt, pepper, and herbs.',
       'Preheat grill or grill pan to medium-high heat.',
@@ -198,6 +207,7 @@ export const SAMPLE_RECIPES: Recipe[] = [
     rating: 4.8,
     totalRatings: 234,
     dietaryInfo: ['Vegan', 'Gluten-Free', 'Dairy-Free'],
+    image: RECIPE_PLACEHOLDER_IMAGES['Ugali'],
     instructions: [
       'Bring 2 cups of water to boil in a heavy-bottomed pan.',
       'Add a pinch of salt to the boiling water.',
@@ -219,6 +229,7 @@ export const SAMPLE_RECIPES: Recipe[] = [
     rating: 4.5,
     totalRatings: 187,
     dietaryInfo: ['Vegan', 'Gluten-Free', 'Dairy-Free'],
+    image: RECIPE_PLACEHOLDER_IMAGES['Sukuma Wiki (Collard Greens)'],
     instructions: [
       'Wash and chop collard greens into strips.',
       'Heat oil in a large pan over medium heat.',
@@ -242,6 +253,7 @@ export const SAMPLE_RECIPES: Recipe[] = [
     rating: 4.6,
     totalRatings: 156,
     dietaryInfo: ['Vegetarian'],
+    image: RECIPE_PLACEHOLDER_IMAGES['Kenyan Chapati'],
     instructions: [
       'Mix flour, salt, and a pinch of sugar in a bowl.',
       'Add oil and mix, then gradually add warm water to form a soft dough.',
@@ -265,6 +277,7 @@ export const SAMPLE_RECIPES: Recipe[] = [
     rating: 4.4,
     totalRatings: 143,
     dietaryInfo: ['Vegan', 'Gluten-Free', 'Dairy-Free'],
+    image: RECIPE_PLACEHOLDER_IMAGES['Githeri'],
     instructions: [
       'Soak maize and beans separately overnight.',
       'Boil maize for 30 minutes until tender.',
@@ -288,6 +301,7 @@ export const SAMPLE_RECIPES: Recipe[] = [
     rating: 4.7,
     totalRatings: 198,
     dietaryInfo: ['Dairy-Free'],
+    image: RECIPE_PLACEHOLDER_IMAGES['Kenyan Pilau'],
     instructions: [
       'Wash rice and soak for 30 minutes.',
       'Cut beef into cubes and brown in hot oil.',
@@ -312,6 +326,7 @@ export const SAMPLE_RECIPES: Recipe[] = [
     rating: 4.3,
     totalRatings: 89,
     dietaryInfo: ['Vegetarian'],
+    image: RECIPE_PLACEHOLDER_IMAGES['Mandazi'],
     instructions: [
       'Mix flour, sugar, baking powder, and ground cardamom in a bowl.',
       'Beat egg and add to dry ingredients.',
