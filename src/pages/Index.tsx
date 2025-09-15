@@ -92,29 +92,53 @@ const Index = () => {
           {user ? <UserMenu /> : null}
         </div>
         
-        <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-6">
-          <ChefHat className="h-16 w-16 mx-auto mb-6 animate-float" />
-          <h1 className="text-5xl md:text-7xl font-bold mb-6">
-            Recipe <span className="text-accent">Recommender</span>
-          </h1>
-          <p className="text-xl md:text-2xl mb-8 text-white/90">
-            Transform your ingredients into delicious meals with AI-powered recipe suggestions
-          </p>
-          
-          {!user ? (
-            <div className="max-w-md mx-auto mb-8">
-              <AuthForm />
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[600px]">
+            {/* Left side - App preview/description */}
+            <div className="text-white">
+              <ChefHat className="h-16 w-16 mb-6 animate-float" />
+              <h1 className="text-4xl md:text-6xl font-bold mb-6">
+                Recipe <span className="text-accent">Recommender</span>
+              </h1>
+              <p className="text-lg md:text-xl mb-8 text-white/90">
+                Transform your ingredients into delicious meals with AI-powered recipe suggestions
+              </p>
+              
+              {/* Feature highlights */}
+              <div className="space-y-4 mb-8">
+                <div className="flex items-center space-x-3">
+                  <Sparkles className="h-5 w-5 text-accent" />
+                  <span className="text-white/90">AI-powered recipe generation</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <ChefHat className="h-5 w-5 text-accent" />
+                  <span className="text-white/90">Smart ingredient matching</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <ShoppingCart className="h-5 w-5 text-accent" />
+                  <span className="text-white/90">Automatic shopping lists</span>
+                </div>
+              </div>
+              
+              {user && (
+                <Button 
+                  size="lg"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg font-semibold shadow-food"
+                  onClick={() => document.getElementById('ingredient-section')?.scrollIntoView({ behavior: 'smooth' })}
+                >
+                  Start Cooking
+                  <Sparkles className="ml-2 h-5 w-5" />
+                </Button>
+              )}
             </div>
-          ) : (
-            <Button 
-              size="lg"
-              className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg font-semibold shadow-food"
-              onClick={() => document.getElementById('ingredient-section')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              Start Cooking
-              <Sparkles className="ml-2 h-5 w-5" />
-            </Button>
-          )}
+            
+            {/* Right side - Auth form for non-authenticated users */}
+            {!user && (
+              <div className="flex justify-center lg:justify-end">
+                <AuthForm />
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
