@@ -78,84 +78,104 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${heroImage})` }}
-        />
-        <div className="absolute inset-0 bg-black/40" />
-        
-        {/* User Menu or Auth Form */}
-        <div className="absolute top-4 right-4 z-20">
-          {user ? <UserMenu /> : null}
-        </div>
-        
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[600px]">
-            {/* Left side - App preview/description */}
-            <div className="text-white">
-              <ChefHat className="h-16 w-16 mb-6 animate-float" />
-              <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                Recipe <span className="text-accent">Recommender</span>
-              </h1>
-              <p className="text-lg md:text-xl mb-8 text-white/90">
-                Transform your ingredients into delicious meals with AI-powered recipe suggestions
-              </p>
-              
-              {/* Feature highlights */}
-              <div className="space-y-4 mb-8">
-                <div className="flex items-center space-x-3">
-                  <Sparkles className="h-5 w-5 text-accent" />
-                  <span className="text-white/90">AI-powered recipe generation</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <ChefHat className="h-5 w-5 text-accent" />
-                  <span className="text-white/90">Smart ingredient matching</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <ShoppingCart className="h-5 w-5 text-accent" />
-                  <span className="text-white/90">Automatic shopping lists</span>
-                </div>
-              </div>
-              
-              {user && (
-                <Button 
-                  size="lg"
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg font-semibold shadow-food"
-                  onClick={() => document.getElementById('ingredient-section')?.scrollIntoView({ behavior: 'smooth' })}
-                >
-                  Start Cooking
-                  <Sparkles className="ml-2 h-5 w-5" />
-                </Button>
-              )}
+    <div className="min-h-screen bg-background relative">
+      {/* Auth Sidebar for non-authenticated users */}
+      {!user && (
+        <div className="fixed top-0 right-0 h-full w-80 bg-black/90 backdrop-blur-md z-50 flex flex-col">
+          <div className="p-6 flex-1 flex flex-col justify-center">
+            <div className="mb-6 text-center">
+              <ChefHat className="h-12 w-12 mx-auto mb-4 text-white animate-float" />
+              <h2 className="text-2xl font-bold text-white mb-2">Join Recipe Finder</h2>
+              <p className="text-white/80 text-sm">Sign up to save favorites, create shopping lists, and get personalized recommendations</p>
             </div>
-            
-            {/* Right side - Auth form for non-authenticated users */}
-            {!user && (
-              <div className="flex justify-center lg:justify-end">
-                <AuthForm />
-              </div>
-            )}
+            <AuthForm />
+            <div className="mt-6 text-center">
+              <p className="text-white/60 text-xs">Or continue browsing as a guest →</p>
+            </div>
           </div>
         </div>
-      </section>
-
-      {/* Only show the rest of the app if user is authenticated */}
+      )}
+      
+      {/* User Menu for authenticated users */}
       {user && (
-        <>
-          {/* Ingredient Selection Section */}
-          <section id="ingredient-section" className="py-16 px-6">
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
-                  What's in your kitchen?
-                </h2>
-                <p className="text-lg text-muted-foreground">
-                  Select your available ingredients and let AI suggest perfect recipes for you
-                </p>
+        <div className="absolute top-4 right-4 z-20">
+          <UserMenu />
+        </div>
+      )}
+
+      {/* Main content area */}
+      <div className={`${!user ? 'pr-80' : ''} transition-all duration-300`}>
+        {/* Hero Section */}
+        <section className="relative h-screen flex items-center justify-center overflow-hidden">
+          <div 
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url(${heroImage})` }}
+          />
+          <div className="absolute inset-0 bg-black/40" />
+          
+          <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-6">
+            <ChefHat className="h-16 w-16 mx-auto mb-6 animate-float" />
+            <h1 className="text-5xl md:text-7xl font-bold mb-6">
+              Recipe <span className="text-accent">Recommender</span>
+            </h1>
+            <p className="text-xl md:text-2xl mb-8 text-white/90">
+              Transform your ingredients into delicious meals with AI-powered recipe suggestions
+            </p>
+            
+            {/* Feature highlights */}
+            <div className="grid md:grid-cols-3 gap-6 mb-8 max-w-2xl mx-auto">
+              <div className="text-center">
+                <Sparkles className="h-8 w-8 mx-auto mb-2 text-accent" />
+                <p className="text-white/90 text-sm">AI-Powered Recipes</p>
               </div>
+              <div className="text-center">
+                <ChefHat className="h-8 w-8 mx-auto mb-2 text-accent" />
+                <p className="text-white/90 text-sm">Smart Matching</p>
+              </div>
+              <div className="text-center">
+                <ShoppingCart className="h-8 w-8 mx-auto mb-2 text-accent" />
+                <p className="text-white/90 text-sm">Shopping Lists</p>
+              </div>
+            </div>
+            
+            <Button 
+              size="lg"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg font-semibold shadow-food"
+              onClick={() => document.getElementById('ingredient-section')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              {user ? 'Start Cooking' : 'Try It Now'}
+              <Sparkles className="ml-2 h-5 w-5" />
+            </Button>
+            
+            {!user && (
+              <p className="mt-4 text-white/70 text-sm">No account required to explore</p>
+            )}
+          </div>
+        </section>
+
+        {/* Demo banner for non-authenticated users */}
+        {!user && (
+          <div className="bg-accent/10 border-b border-accent/20 py-3">
+            <div className="max-w-6xl mx-auto px-6 text-center">
+              <p className="text-foreground">
+                <span className="font-semibold">Demo Mode:</span> Exploring as a guest. 
+                <span className="text-accent ml-2">Sign up to save favorites and create shopping lists →</span>
+              </p>
+            </div>
+          </div>
+        )}
+        
+        {/* Ingredient Selection Section - Always visible */}
+        <section id="ingredient-section" className="py-16 px-6">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+                What's in your kitchen?
+              </h2>
+              <p className="text-lg text-muted-foreground">
+                Select your available ingredients and let AI suggest perfect recipes for you
+              </p>
+            </div>
 
               <div className="bg-card rounded-xl p-8 shadow-food">
                 <IngredientSelector 
@@ -247,10 +267,9 @@ const Index = () => {
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
           />
-        </>
-      )}
-    </div>
-  );
-};
+        </div>
+      </div>
+    );
+  };
 
 export default Index;

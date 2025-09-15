@@ -82,14 +82,10 @@ export const AuthForm = () => {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto bg-white/10 backdrop-blur-md border-white/20">
-      <CardHeader className="text-center">
-        <CardTitle className="text-white">Join Recipe Finder</CardTitle>
-        <CardDescription className="text-white/80">Sign in or create an account to save your favorite recipes</CardDescription>
-      </CardHeader>
-      <CardContent>
+    <Card className="w-full bg-white/10 backdrop-blur-md border-white/20">
+      <CardContent className="p-6">
         <Tabs defaultValue="signin" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 bg-white/10">
+          <TabsList className="grid w-full grid-cols-2 bg-white/10 mb-6">
             <TabsTrigger value="signin" className="text-white data-[state=active]:bg-white data-[state=active]:text-black">Sign In</TabsTrigger>
             <TabsTrigger value="signup" className="text-white data-[state=active]:bg-white data-[state=active]:text-black">Sign Up</TabsTrigger>
           </TabsList>
