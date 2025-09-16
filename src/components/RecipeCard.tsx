@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { RecipeRating } from './RecipeRating';
+import { useRecipeImage } from '@/hooks/useRecipeImage';
 
 export interface Recipe {
   id: string;
@@ -29,6 +30,7 @@ interface RecipeCardProps {
 
 export const RecipeCard = ({ recipe, onViewRecipe, onToggleForShopping, isSelectedForShopping = false }: RecipeCardProps) => {
   const matchPercentage = Math.round((recipe.matchedIngredients.length / recipe.ingredients.length) * 100);
+  const { imageUrl, isLoading } = useRecipeImage(recipe.title, recipe.ingredients);
   
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
@@ -43,11 +45,30 @@ export const RecipeCard = ({ recipe, onViewRecipe, onToggleForShopping, isSelect
     <Card className="group hover:shadow-food transition-smooth cursor-pointer overflow-hidden">
       <CardHeader className="p-0">
         <div className="relative h-48 bg-gradient-subtle">
-          {recipe.image ? (
+          {isLoading ? (
+            <div className="w-full h-full bg-gradient-food flex items-center justify-center">
+              <ChefHat className="h-12 w-12 text-primary-foreground/80 animate-pulse" />
+            </div>
+          ) : imageUrl ? (
             <img 
-              src={recipe.image} 
-              alt={recipe.title}
+              src={imageUrl} 
+              alt={`${recipe.title} - Recipe photo`}
               className="w-full h-full object-cover group-hover:scale-105 transition-smooth"
+              onError={(e) => {
+                // Fallback to chef hat icon if image fails to load
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                const parent = target.parentElement;
+                if (parent) {
+                  parent.innerHTML = `
+                    <div class="w-full h-full bg-gradient-food flex items-center justify-center">
+                      <svg class="h-12 w-12 text-primary-foreground/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                      </svg>
+                    </div>
+                  `;
+                }
+              }}
             />
           ) : (
             <div className="w-full h-full bg-gradient-food flex items-center justify-center">

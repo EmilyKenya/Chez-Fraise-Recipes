@@ -11,10 +11,39 @@ export const generateRecipeImagePrompt = (title: string, ingredients: string[]):
   return prompt;
 };
 
-export const getRecipeImageUrl = async (title: string, ingredients: string[]): Promise<string | null> => {
-  // For now, return null to use the default chef hat icon
-  // This can be enhanced with actual AI image generation service
-  return null;
+// Default fallback image for recipes without specific images
+export const DEFAULT_RECIPE_IMAGE = 'https://images.unsplash.com/photo-1556909114-8b9b2b50b7b6?w=800&h=600&fit=crop&crop=center';
+
+// Validate if recipe has a matching image
+export const hasValidRecipeImage = (title: string): boolean => {
+  return title in RECIPE_PLACEHOLDER_IMAGES;
+};
+
+// Get validated recipe image URL or fallback
+export const getRecipeImageUrl = async (title: string, ingredients: string[]): Promise<string> => {
+  // Check if we have a specific image for this recipe title
+  if (hasValidRecipeImage(title)) {
+    return RECIPE_PLACEHOLDER_IMAGES[title];
+  }
+  
+  // Try to find an image based on main ingredients
+  const mainIngredient = ingredients[0]?.toLowerCase();
+  
+  // Look for recipes with similar main ingredients
+  const similarRecipe = Object.keys(RECIPE_PLACEHOLDER_IMAGES).find(recipeTitle => {
+    const recipeTitleLower = recipeTitle.toLowerCase();
+    return ingredients.some(ingredient => 
+      recipeTitleLower.includes(ingredient.toLowerCase()) ||
+      ingredient.toLowerCase().includes(recipeTitleLower.split(' ')[0])
+    );
+  });
+  
+  if (similarRecipe) {
+    return RECIPE_PLACEHOLDER_IMAGES[similarRecipe];
+  }
+  
+  // Return default fallback image for unmatched recipes
+  return DEFAULT_RECIPE_IMAGE;
 };
 
 // Placeholder high-quality recipe images URLs
